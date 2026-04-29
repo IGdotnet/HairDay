@@ -10,10 +10,12 @@ export async function schedulesDay(){
 
     //Retrieves schedules from the API to load on the right side of the screen
     const dailySchedules = await scheduleFetchByDay({ date })
-    console.log(dailySchedules)
 
     //Avaiable dates on the left side of the screen (future date or unscheduled dates)
 
+    //Show schedules
+    scheduleShow({ dailySchedules })
+
     //Render avaiable dates
-    hoursLoad({ date })
+    hoursLoad({ date, dailySchedules })
 }

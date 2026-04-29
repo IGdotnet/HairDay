@@ -4,22 +4,29 @@ import { hoursClick } from "./hours-click.js"
 
 const hours = document.getElementById("hours")
 
-export function hoursLoad({ date }) {
-    //Clear the hour list
-    hours.innerHTML = ""
+export function hoursLoad({ date, dailySchedules }) {
+        //Clear the hour list
+        hours.innerHTML = ""
 
-    const opening = openingHours.map((hour) => {
+        const opening = openingHours.map((hour) => {
+        
+        //Get the list of all times that are unavailable
+        const unavailableHours = dailySchedules.map((schedule) => dayjs(schedule.when).format("HH:mm"))
+
         //Get hour
         const [scheduleHour] = hour.split(":")
         
         
         //Add hour on date and verify if it is in the past
-        const isHourPast = dayjs(date).add(scheduleHour, "hour").isAfter(dayjs())
+        const isHourPast = dayjs(date).add(scheduleHour, "hour").isBefore(dayjs())
+
+        //The time is considered avaiable if it isn't listed here (!)
+        const available = !unavailableHours.includes(hour) && !isHourPast
 
         //Definy if the date is available
         return {
             hour, 
-            available: isHourPast,
+            available
         }
     })
 
